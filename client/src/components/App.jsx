@@ -2,34 +2,29 @@ import React from 'react';
 import movies from '../movieData.js';
 import MovieList from './MovieList.jsx';
 import Search from './Search.jsx';
+import AddMovie from './AddMovie.jsx';
 
 const { useState } = React;
 
 const App = (props) => {
   const [movieList, setMovieList] = useState(movies);
-  const [userInput, setUserInput] = useState('');
+  const [userSearchInput, setUserSearchInput] = useState('');
+  const [userAddInput, setUserAddInput] = useState('');
+
   // create a handle change function to be passed down to Search as a prop.
-  const handleChange = function(value) {
+  const handleSearchChange = function(value) {
     // if user deletes all text from input field, render default movie list
     if (value.length === 0) {
       setMovieList(movies);
     }
-    // update userInput state based off event.target.value
-    setUserInput(value);
+    setUserSearchInput(value);
   };
 
-  const handleClick = function() {
-    // compare user input state to movies data
-
-    // create empty newMoviesList array
+  const handleSearchClick = function() {
     const newMoviesList = [];
-    // iterate movies
     movies.forEach(function(movie) {
-      // change title to lowercase to work around case sensitivity of includes method
       var title = movie.title.toLowerCase();
-      // if input matches part of a movie title
-      if (title.includes(userInput)) {
-        //  push to new movies list
+      if (title.includes(userSearchInput)) {
         newMoviesList.push(movie);
       }
     });
@@ -38,20 +33,35 @@ const App = (props) => {
       setMovieList([{title: 'No movie by that name found...'}])
       return;
     }
-    // setMovieList(newmovieslist)
     setMovieList(newMoviesList);
-
   };
 
-  // useEffect();
+  // add handle add movie change
+  const handleAddChange = function(value) {
+    setUserAddInput(value);
+  };
+  // add handle add movie click
+  const handleAddClick = function() {
+    if (userAddInput.length > 0) {
+      const newMovieObj = {
+        title: userAddInput,
+      }
+      movies.unshift(newMovieObj);
+      setMovieList(movies);
+      setUserAddInput(''); // not sure why this doesnt reset input field to blank
+    }
+  };
+
 
   return (
     <div>
       <h1>Movie List</h1>
-      <Search handleChange={handleChange} handleClick={handleClick} />
+      <AddMovie handleAddChange={handleAddChange} handleAddClick={handleAddClick} />
+      <Search handleSearchChange={handleSearchChange} handleSearchClick={handleSearchClick} />
       <MovieList movies={movieList} />
     </div>
   );
 };
 
 export default App;
+
