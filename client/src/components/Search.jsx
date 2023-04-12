@@ -7,10 +7,10 @@ import React from 'react';
 // set up a handle click in go button that calls a
 // handle click function that changes state of movie list
 
-const Search = ( {handleChange, handleClick} ) => (
+const Search = ( {handleSearchChange, handleSearchClick} ) => (
   <div>
-    <input type="text" onChange={(event) => (handleChange(event.target.value.toLowerCase()))}></input>
-    <button onClick={() => (handleClick())}>Go!</button>
+    <input type="text" onChange={(event) => (handleSearchChange(event.target.value.toLowerCase()))}></input>
+    <button onClick={() => (handleSearchClick())}>Go!</button>
   </div>
 );
 
