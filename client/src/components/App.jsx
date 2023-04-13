@@ -49,7 +49,7 @@ const App = (props) => {
         title: userAddInput,
         watched: 'To Watch',
       }
-      movies.unshift(newMovieObj);
+      movies.push(newMovieObj);
       setMovieList(movies);
       setUserAddInput(''); // not sure why this doesnt reset input field to blank when add button is clicked
     }
@@ -110,7 +110,7 @@ const App = (props) => {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Movie List</h1>
       <AddMovie handleAddChange={handleAddChange} handleAddClick={handleAddClick} />
       <Search handleSearchChange={handleSearchChange} handleSearchClick={handleSearchClick} />
