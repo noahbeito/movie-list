@@ -3,6 +3,7 @@ import movies from '../movieData.js';
 import MovieList from './MovieList.jsx';
 import Search from './Search.jsx';
 import AddMovie from './AddMovie.jsx';
+import WatchedFilter from './WatchedFilter.jsx';
 
 const { useState } = React;
 
@@ -66,11 +67,54 @@ const App = (props) => {
     setMovieList(newMovies);
   }
 
+  // click handler for watched list and to watch list buttons
+  const handleWatchedButtons = function(button) {
+    // if event target value is 'Watched'
+    console.log(button);
+    if (button === 'Watched') {
+      // create new watchedList array
+      const watchedList = [];
+      // iterate movies data
+      movies.forEach(function(movie) {
+        // if movie is watched
+        if (movie.watched === 'Watched') {
+          // push to watched list array
+          watchedList.push(movie);
+        }
+      })
+      // set movies list state to new watched list array
+      setMovieList(watchedList);
+    }
+
+    // if event target value is 'To Watch'
+    if (button === 'To Watch') {
+      // create new toWatchList array
+      const toWatchList = [];
+      // iterate movies data
+      movies.forEach(function(movie) {
+        // if movie is 'to watch'
+        if (movie.watched === 'To Watch') {
+          // push to towatchlist array
+          toWatchList.push(movie);
+        }
+      })
+      // set movie list state to new to watch array
+      setMovieList(toWatchList);
+    }
+
+    // for an all button
+    if (button === 'All') {
+      const allMovies = movies.slice();
+      setMovieList(allMovies);
+    }
+  }
+
   return (
     <div>
       <h1>Movie List</h1>
       <AddMovie handleAddChange={handleAddChange} handleAddClick={handleAddClick} />
       <Search handleSearchChange={handleSearchChange} handleSearchClick={handleSearchClick} />
+      <WatchedFilter handleWatchedButtons={handleWatchedButtons}/>
       <MovieList movies={movieList} handleWatched={handleWatched} />
     </div>
   );
