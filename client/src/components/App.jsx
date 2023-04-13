@@ -48,6 +48,11 @@ const App = (props) => {
       const newMovieObj = {
         title: userAddInput,
         watched: 'To Watch',
+        expand: false,
+        year: '1999',
+        runtime: '105 min',
+        metascore: '55',
+        imdbRating: '7.4',
       }
       movies.push(newMovieObj);
       setMovieList(movies);
@@ -65,7 +70,7 @@ const App = (props) => {
 
     const newMovies = movies.slice();
     setMovieList(newMovies);
-  }
+  };
 
   // click handler for watched list and to watch list buttons
   const handleWatchedButtons = function(button) {
@@ -107,7 +112,15 @@ const App = (props) => {
       const allMovies = movies.slice();
       setMovieList(allMovies);
     }
-  }
+  };
+
+  // click handler for a title click
+  const handleTitleClick = function(movie) {
+    // change the expand property to true
+    movie.expand = true;
+    const updatedMovies = movies.slice();
+    setMovieList(updatedMovies);
+  };
 
   return (
     <div className="container">
@@ -115,7 +128,7 @@ const App = (props) => {
       <AddMovie handleAddChange={handleAddChange} handleAddClick={handleAddClick} />
       <Search handleSearchChange={handleSearchChange} handleSearchClick={handleSearchClick} />
       <WatchedFilter handleWatchedButtons={handleWatchedButtons}/>
-      <MovieList movies={movieList} handleWatched={handleWatched} />
+      <MovieList movies={movieList} handleWatched={handleWatched} handleTitleClick={handleTitleClick}/>
     </div>
   );
 };
