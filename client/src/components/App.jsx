@@ -40,25 +40,38 @@ const App = (props) => {
   const handleAddChange = function(value) {
     setUserAddInput(value);
   };
+
   // add handle add movie click
   const handleAddClick = function() {
     if (userAddInput.length > 0) {
       const newMovieObj = {
         title: userAddInput,
+        watched: 'To Watch',
       }
       movies.unshift(newMovieObj);
       setMovieList(movies);
-      setUserAddInput(''); // not sure why this doesnt reset input field to blank
+      setUserAddInput(''); // not sure why this doesnt reset input field to blank when add button is clicked
     }
   };
 
+  // click handler for toggling watched
+  const handleWatched = function(movie) {
+    if (movie.watched === 'To Watch') {
+      movie.watched = 'Watched';
+    } else if (movie.watched === 'Watched') {
+      movie.watched = 'To Watch';
+    }
+
+    const newMovies = movies.slice();
+    setMovieList(newMovies);
+  }
 
   return (
     <div>
       <h1>Movie List</h1>
       <AddMovie handleAddChange={handleAddChange} handleAddClick={handleAddClick} />
       <Search handleSearchChange={handleSearchChange} handleSearchClick={handleSearchClick} />
-      <MovieList movies={movieList} />
+      <MovieList movies={movieList} handleWatched={handleWatched} />
     </div>
   );
 };
