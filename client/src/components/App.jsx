@@ -4,13 +4,36 @@ import MovieList from './MovieList.jsx';
 import Search from './Search.jsx';
 import AddMovie from './AddMovie.jsx';
 import WatchedFilter from './WatchedFilter.jsx';
+const axios = require('axios');
 
-const { useState } = React;
+const { useState, useEffect } = React;
+
 
 const App = (props) => {
   const [movieList, setMovieList] = useState(movies);
   const [userSearchInput, setUserSearchInput] = useState('');
   const [userAddInput, setUserAddInput] = useState('');
+
+
+  //*******************************************************************//
+  // send an asynch read all GET request to the server
+  // upon response, setMovieList with movie data
+  //*******************************************************************//
+
+  useEffect(() => {
+    axios.get('/api/movies')
+      .then((response) => {
+        console.log("RESPONSE:", response.data);
+        if (Array.isArray(response.data)) {
+          setMovieList(response.data) /// need to make sure this is array of movie objects. Where is best to manipulate response data into obj. models maybe
+        } else {
+          setMovieList([]);
+        }
+      })
+      .catch((error) => {
+        // handle error
+      })
+  }, []);
 
   // create a handle change function to be passed down to Search as a prop.
   const handleSearchChange = function(value) {
@@ -42,21 +65,46 @@ const App = (props) => {
     setUserAddInput(value);
   };
 
+
+  //*******************************************************************//
+  // in handle add click below:
+  // send an asynch post request to the server
+  // so that it will eventually add a new movie to the
+  // movie list table in the db
+  //*******************************************************************//
   // add handle add movie click
   const handleAddClick = function() {
     if (userAddInput.length > 0) {
-      const newMovieObj = {
+      // const newMovieObj = {
+      //   title: userAddInput,
+      //   watched: 'To Watch',
+      //   expand: false,
+      //   year: '1999',
+      //   runtime: '105 min',
+      //   metascore: '55',
+      //   imdbRating: '7.4',
+      // }
+      // movies.push(newMovieObj);
+      // setMovieList(movies);
+      // setUserAddInput(''); // not sure why this doesnt reset input field to blank when add button is clicked
+      // /// maybe move the old code above in here
+
+      axios.post('/api/movies', {
         title: userAddInput,
         watched: 'To Watch',
-        expand: false,
-        year: '1999',
-        runtime: '105 min',
-        metascore: '55',
-        imdbRating: '7.4',
-      }
-      movies.push(newMovieObj);
-      setMovieList(movies);
-      setUserAddInput(''); // not sure why this doesnt reset input field to blank when add button is clicked
+        release_year: '',
+        runtime: '',
+        metascore: '',
+        imbdRating: '',
+      })
+      .then(() => {
+        axios.get('/api/movies').then((response) => {
+          setMovieList(response.data);
+        })
+      })
+      .catch(() => {
+        // handle error
+      })
     }
   };
 
