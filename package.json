@@ -24,6 +24,9 @@
     "express": "^4.17.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "underscore": "^1.12.1"
+    "underscore": "^1.12.1",
+    "mysql2": "^2.2.5",
+    "morgan": "1.10.0",
+    "cors": "2.8.5"
   }
 }
